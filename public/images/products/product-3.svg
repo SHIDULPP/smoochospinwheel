@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="48" fill="#fff"/>
+  <circle cx="128" cy="110" r="70" fill="#ff80ab"/>
+  
+  <path d="M95 70 L100 170 Q128 190 156 170 L161 70 Z" fill="#ff80ab"/>
+  <ellipse cx="128" cy="70" rx="33" ry="12" fill="#ffb3d1"/>
+  <rect x="118" y="45" width="20" height="28" rx="6" fill="#fff" opacity="0.9"/>
+  <circle cx="145" cy="55" r="8" fill="#ff4081"/>
+
+  <text x="128" y="220" text-anchor="middle" font-family="Nunito, Arial, sans-serif" font-size="22" font-weight="700" fill="#c2185b">Drink</text>
+</svg>

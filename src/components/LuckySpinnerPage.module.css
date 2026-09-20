@@ -1,0 +1,112 @@
+.page {
+  position: relative;
+  min-height: 100dvh;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -10%, #ffd6ea 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 100%, #ff8fc4 0%, transparent 50%),
+    linear-gradient(180deg, var(--pink-bg-light) 0%, var(--pink-bg) 45%, var(--pink-bg-deep) 100%);
+  overflow-x: hidden;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 28rem);
+  margin: 0 auto;
+  padding: 1.25rem 1.1rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.35rem;
+}
+
+.logo {
+  width: clamp(5.5rem, 28vw, 7.5rem);
+  height: clamp(5.5rem, 28vw, 7.5rem);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(194, 24, 91, 0.25);
+  background: #ffffff;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+}
+
+.brand {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 6.5vw, 2.15rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1.1;
+  max-width: 16rem;
+}
+
+.tagline {
+  margin: 0.15rem 0 0;
+  font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.cta {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.9;
+}
+
+.loading {
+  margin: 4rem 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.blocked {
+  width: min(100%, 22rem);
+  margin: 1rem auto 0;
+  padding: 1.5rem 1.25rem;
+  border-radius: var(--radius-lg);
+  background: var(--pink-panel);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.statusMsg {
+  margin: 0;
+  max-width: 22rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding-top: 2rem;
+    gap: 1.5rem;
+  }
+}

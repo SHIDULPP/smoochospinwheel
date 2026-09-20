@@ -1,0 +1,89 @@
+.root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0.22;
+}
+
+.shape::before {
+  content: "";
+  display: block;
+}
+
+.shape[data-shape="heart"]::before {
+  width: 1.1rem;
+  height: 1rem;
+  background: #fff;
+  transform: rotate(-45deg);
+  border-radius: 0.1rem;
+  box-shadow: 0.55rem -0.55rem 0 #fff;
+  clip-path: none;
+  /* Simple heart via CSS */
+  position: relative;
+}
+
+.shape[data-shape="heart"] {
+  width: 1.4rem;
+  height: 1.4rem;
+  background: transparent;
+}
+
+.shape[data-shape="heart"]::before {
+  content: "♥";
+  font-size: 1.25rem;
+  line-height: 1;
+  color: #fff;
+  background: none;
+  box-shadow: none;
+  transform: none;
+  width: auto;
+  height: auto;
+}
+
+.shape[data-shape="star"]::before {
+  content: "★";
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.shape[data-shape="circle"]::before {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #fff;
+  content: "";
+}
+
+.heart1 { top: 8%; left: 8%; animation: float 7s ease-in-out infinite; }
+.heart2 { top: 22%; right: 10%; animation: float 9s ease-in-out infinite 0.5s; }
+.heart3 { bottom: 18%; left: 12%; animation: float 8s ease-in-out infinite 1s; }
+.star1 { top: 12%; right: 18%; animation: twinkle 4s ease-in-out infinite; }
+.star2 { bottom: 28%; right: 14%; animation: twinkle 5s ease-in-out infinite 0.8s; }
+.star3 { top: 40%; left: 6%; animation: twinkle 6s ease-in-out infinite 1.2s; }
+.circle1 { top: 55%; right: 8%; animation: float 10s ease-in-out infinite; }
+.circle2 { bottom: 12%; left: 40%; animation: float 11s ease-in-out infinite 0.3s; }
+.circle3 { top: 70%; left: 18%; animation: float 9s ease-in-out infinite 1.5s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.18; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart1, .heart2, .heart3,
+  .star1, .star2, .star3,
+  .circle1, .circle2, .circle3 {
+    animation: none;
+  }
+}

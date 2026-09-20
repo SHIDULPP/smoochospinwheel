@@ -1,0 +1,61 @@
+:root {
+  /* Pink café palette — edit these to rebrand */
+  --pink-bg: #ffb6d9;
+  --pink-bg-deep: #ff8fc4;
+  --pink-bg-light: #ffd6ea;
+  --pink-panel: #ffe4f1;
+  --pink-panel-deep: #ff9ec8;
+  --pink-accent: #e91e8c;
+  --pink-accent-deep: #c2185b;
+  --pink-soft: #fff0f7;
+  --cream: #fff8fb;
+  --text-primary: #5a1040;
+  --text-on-pink: #5a1040;
+  --text-muted: #8a3a62;
+  --white: #ffffff;
+  --shadow-soft: 0 12px 40px rgba(194, 24, 91, 0.22);
+  --shadow-btn: 0 8px 0 #c2185b, 0 12px 24px rgba(194, 24, 91, 0.35);
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  --font-display: "Nunito", system-ui, sans-serif;
+  --font-body: "Outfit", system-ui, sans-serif;
+  --wheel-max: 420px;
+  --spin-duration: 5s;
+  --spin-easing: cubic-bezier(0.12, 0.75, 0.12, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--pink-bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --spin-duration: 0.01ms;
+  }
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="48" fill="#fff"/>
+  <circle cx="128" cy="110" r="70" fill="#f8bbd0"/>
+  
+  <ellipse cx="128" cy="100" rx="55" ry="28" fill="#f8bbd0"/>
+  <rect x="78" y="100" width="100" height="22" rx="8" fill="#fce4ec"/>
+  <ellipse cx="128" cy="122" rx="55" ry="28" fill="#f48fb1"/>
+
+  <text x="128" y="220" text-anchor="middle" font-family="Nunito, Arial, sans-serif" font-size="22" font-weight="700" fill="#c2185b">Macaron</text>
+</svg>
