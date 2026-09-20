@@ -3,9 +3,7 @@ name = "smoocho-spinwheel"
 compatibility_date = "2025-09-01"
 pages_build_output_dir = "dist"
 
-# Create with: npm run cf:kv
-# Then paste the id below (and preview_id if shown).
 [[kv_namespaces]]
 binding = "SPIN_KV"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
-preview_id = "REPLACE_WITH_KV_PREVIEW_ID"
+id = "01f59bad3e0f4ceb9b051384d817afc3"
+preview_id = "d210306e36fa493da171543ddaa813a5"
