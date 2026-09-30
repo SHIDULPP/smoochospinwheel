@@ -47,6 +47,7 @@ export function LuckySpinnerPage() {
     async function hydrate() {
       setReducedMotion(prefersReducedMotion());
 
+      // Browser/day layer (works even if Redis is down)
       if (cafeConfig.oneSpinPerBrowser && hasSpun()) {
         const saved = getSavedPrize();
         if (saved && !cancelled) {
@@ -78,10 +79,14 @@ export function LuckySpinnerPage() {
             return;
           }
         } catch {
+          // Fail closed: do not allow spinning when the limit API is broken
           if (!cancelled) {
+            setPhase("blocked");
             setStatusMessage(
-              "Could not verify spin limit. You can still try — if it fails, refresh.",
+              "Spin service is temporarily unavailable. Please try again in a few minutes.",
             );
+            setHydrated(true);
+            return;
           }
         }
       }
@@ -98,6 +103,11 @@ export function LuckySpinnerPage() {
   const finishSpin = useCallback(async (prize: Prize) => {
     markFirstSpinDone();
 
+    // Always persist browser/day result when that limit is on
+    if (cafeConfig.oneSpinPerBrowser) {
+      saveSpinResult(prize);
+    }
+
     if (cafeConfig.oneSpinPerIp) {
       try {
         const claim = await claimSpin({ id: prize.id, label: prize.label });
@@ -106,17 +116,18 @@ export function LuckySpinnerPage() {
           setWinner(prior ?? prize);
           setFreshWin(false);
           setPhase("result");
-            setStatusMessage("This network already spun today — showing today's result.");
+          setStatusMessage(
+            "This network already spun today — showing today's result.",
+          );
           spinningLock.current = false;
           return;
         }
       } catch {
-        setStatusMessage("Could not save IP spin limit. Prize still shown below.");
+        // Prize already shown; browser storage still blocks a second spin today
+        setStatusMessage(
+          "Could not sync network limit. Your result is saved on this device for today.",
+        );
       }
-    }
-
-    if (cafeConfig.oneSpinPerBrowser) {
-      saveSpinResult(prize);
     }
 
     setWinner(prize);
@@ -131,6 +142,16 @@ export function LuckySpinnerPage() {
     setStatusMessage(null);
 
     void (async () => {
+      if (cafeConfig.oneSpinPerBrowser && hasSpun()) {
+        const saved = getSavedPrize();
+        setWinner(saved);
+        setPhase(saved ? "result" : "blocked");
+        setFreshWin(false);
+        setStatusMessage("You already spun today. Come back tomorrow!");
+        spinningLock.current = false;
+        return;
+      }
+
       if (cafeConfig.oneSpinPerIp) {
         try {
           const status = await fetchSpinStatus();
@@ -139,12 +160,19 @@ export function LuckySpinnerPage() {
             setWinner(prior);
             setPhase(prior ? "result" : "blocked");
             setFreshWin(false);
-            setStatusMessage("This network already used today's spin. Try again tomorrow.");
+            setStatusMessage(
+              "This network already used today's spin. Try again tomorrow.",
+            );
             spinningLock.current = false;
             return;
           }
         } catch {
-          // If API is down, still allow the spin for availability
+          setPhase("blocked");
+          setStatusMessage(
+            "Spin service is temporarily unavailable. Please try again in a few minutes.",
+          );
+          spinningLock.current = false;
+          return;
         }
       }
 
@@ -155,7 +183,13 @@ export function LuckySpinnerPage() {
       setPhase("spinning");
 
       if (reduced) {
-        const target = getTargetRotation(index, prizes.length, rotationRef.current, 0, 0);
+        const target = getTargetRotation(
+          index,
+          prizes.length,
+          rotationRef.current,
+          0,
+          0,
+        );
         rotationRef.current = target;
         setRotation(target);
         await finishSpin(prize);
@@ -175,14 +209,6 @@ export function LuckySpinnerPage() {
       }, SPIN_MS + 80);
     })();
   }, [finishSpin, phase]);
-
-  const handleSpinAgain = useCallback(() => {
-    spinningLock.current = false;
-    setWinner(null);
-    setFreshWin(false);
-    setStatusMessage(null);
-    setPhase("ready");
-  }, []);
 
   if (!hydrated) {
     return (
@@ -220,19 +246,7 @@ export function LuckySpinnerPage() {
         ) : null}
 
         {phase === "result" && winner ? (
-          <>
-            <ResultScreen prize={winner} celebrate={freshWin} />
-            {allowSpinAgain ? (
-              <div className={styles.cta}>
-                <SpinButton
-                  spinning={false}
-                  disabled={false}
-                  onSpin={handleSpinAgain}
-                  label="SPIN AGAIN"
-                />
-              </div>
-            ) : null}
-          </>
+          <ResultScreen prize={winner} celebrate={freshWin} />
         ) : null}
 
         {phase === "ready" || phase === "spinning" ? (
@@ -249,13 +263,7 @@ export function LuckySpinnerPage() {
                 disabled={phase !== "ready"}
                 onSpin={handleSpin}
               />
-              <p className={styles.hint}>
-                {cafeConfig.oneSpinPerIp
-                  ? "One spin per day · Instant prize"
-                  : cafeConfig.oneSpinPerBrowser
-                    ? "One spin per day · Instant prize"
-                    : "Testing mode · Unlimited spins"}
-              </p>
+              <p className={styles.hint}>One spin per day · Instant prize</p>
             </div>
           </>
         ) : null}

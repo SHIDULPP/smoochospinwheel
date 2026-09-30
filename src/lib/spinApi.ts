@@ -16,9 +16,21 @@ export type ClaimSpinResult = {
   message?: string;
 };
 
+async function readErrorMessage(res: Response): Promise<string> {
+  try {
+    const data = (await res.json()) as { message?: string };
+    if (data.message) return data.message;
+  } catch {
+    // ignore
+  }
+  return `Request failed (${res.status})`;
+}
+
 export async function fetchSpinStatus(): Promise<SpinStatus> {
   const res = await fetch("/api/spin-status", { cache: "no-store" });
-  if (!res.ok) throw new Error("spin-status failed");
+  if (!res.ok) {
+    throw new Error(await readErrorMessage(res));
+  }
   return (await res.json()) as SpinStatus;
 }
 
@@ -35,6 +47,8 @@ export async function claimSpin(prize: {
   if (res.status === 409) {
     return { ...data, ok: false, allowed: false, alreadySpun: true };
   }
-  if (!res.ok) throw new Error(data.message ?? "claim-spin failed");
+  if (!res.ok) {
+    throw new Error(data.message ?? `claim-spin failed (${res.status})`);
+  }
   return data;
 }
