@@ -7,7 +7,8 @@ export const cafeConfig = {
   oneSpinPerBrowser: false,
   /**
    * One spin per IP per calendar day (Asia/Kolkata midnight reset).
-   * Local: Vite /api middleware. Production: Cloudflare Pages Function + KV.
+   * Local: Vite /api middleware (data/ip-spins.json).
+   * Production (Vercel): Edge API + Upstash/Vercel KV.
    * Set false while testing from the same network / localhost.
    */
   oneSpinPerIp: true,

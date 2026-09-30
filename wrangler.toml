@@ -1,9 +1,0 @@
-# Cloudflare Pages project
-name = "smoocho-spinwheel"
-compatibility_date = "2025-09-01"
-pages_build_output_dir = "dist"
-
-[[kv_namespaces]]
-binding = "SPIN_KV"
-id = "01f59bad3e0f4ceb9b051384d817afc3"
-preview_id = "d210306e36fa493da171543ddaa813a5"

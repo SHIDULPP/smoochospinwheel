@@ -33,7 +33,6 @@ export function LuckySpinnerPage() {
   const [freshWin, setFreshWin] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [isFirstTime, setIsFirstTime] = useState(true);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const spinningLock = useRef(false);
   const rotationRef = useRef(0);
@@ -47,7 +46,6 @@ export function LuckySpinnerPage() {
 
     async function hydrate() {
       setReducedMotion(prefersReducedMotion());
-      setIsFirstTime(isFirstTimeSpinner());
 
       if (cafeConfig.oneSpinPerBrowser && hasSpun()) {
         const saved = getSavedPrize();
@@ -99,7 +97,6 @@ export function LuckySpinnerPage() {
 
   const finishSpin = useCallback(async (prize: Prize) => {
     markFirstSpinDone();
-    setIsFirstTime(false);
 
     if (cafeConfig.oneSpinPerIp) {
       try {
@@ -254,16 +251,10 @@ export function LuckySpinnerPage() {
               />
               <p className={styles.hint}>
                 {cafeConfig.oneSpinPerIp
-                  ? isFirstTime
-                    ? "One spin per day · First visit: 10%, 15%, or miss"
-                    : "One spin per day · Come back tomorrow after you play"
+                  ? "One spin per day · Instant prize"
                   : cafeConfig.oneSpinPerBrowser
-                    ? isFirstTime
-                      ? "First spin · 10%, 15%, or try again"
-                      : "One spin per day · Instant prize"
-                    : isFirstTime
-                      ? "Testing · First spin: 10%, 15%, or miss"
-                      : "Testing mode · Unlimited spins"}
+                    ? "One spin per day · Instant prize"
+                    : "Testing mode · Unlimited spins"}
               </p>
             </div>
           </>

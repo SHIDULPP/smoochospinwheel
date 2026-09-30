@@ -1,4 +1,4 @@
-/** Café timezone — daily spin limit resets at midnight here. */
+/** Café timezone — daily spin limit resets at midnight IST. */
 export const SPIN_TIMEZONE = "Asia/Kolkata";
 
 export type SpinRecord = {
@@ -17,14 +17,18 @@ export function todayKey(date = new Date()): string {
   }).format(date);
 }
 
-export function kvKeyForIp(ip: string): string {
+export function redisKeyForIp(ip: string): string {
   return `spin:ip:${ip}`;
 }
 
 export function getClientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    return forwarded.split(",")[0]!.trim();
+  }
   return (
+    request.headers.get("x-real-ip") ||
     request.headers.get("cf-connecting-ip") ||
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown"
   );
 }
@@ -37,19 +41,6 @@ export function json(data: unknown, status = 200): Response {
       "Cache-Control": "no-store",
     },
   });
-}
-
-export async function readSpinRecord(
-  kv: KVNamespace,
-  ip: string,
-): Promise<SpinRecord | null> {
-  const raw = await kv.get(kvKeyForIp(ip));
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as SpinRecord;
-  } catch {
-    return null;
-  }
 }
 
 export function isSpunToday(record: SpinRecord | null): boolean {

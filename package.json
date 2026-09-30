@@ -8,24 +8,22 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "cf:login": "wrangler login",
-    "cf:kv": "wrangler kv namespace create SMOOCHO_SPINS && wrangler kv namespace create SMOOCHO_SPINS --preview",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name=smoocho-spinwheel",
-    "deploy:init": "wrangler pages project create smoocho-spinwheel --production-branch=main"
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel"
   },
   "dependencies": {
+    "@upstash/redis": "^1.35.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260918.1",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2",
-    "vite": "^8.3.0",
-    "wrangler": "^4.34.0"
+    "vercel": "^48.1.0",
+    "vite": "^8.3.0"
   }
 }
